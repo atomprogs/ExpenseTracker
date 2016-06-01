@@ -18,7 +18,7 @@ namespace ExpenseTracker.Filters
             var emptyresult = false;
             var CurrentControllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName;
             var CurrentActionName = filterContext.ActionDescriptor.ActionName;
-            string[] NoValidationForActions = new string[] { "index", "login", "signin", "signinview", "signupview", "signup" };
+            string[] NoValidationForActions = new string[] { "index", "login", "signin", "GetSignUpCode".ToLower(), "GetRandomString".ToLower(), "signup" };
             if (!NoValidationForActions.Contains(CurrentActionName.ToLower()))
             {
                 if (filterContext.HttpContext.Session["User"] != null)

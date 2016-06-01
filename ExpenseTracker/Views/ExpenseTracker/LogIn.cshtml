@@ -14,14 +14,14 @@
 
                     <div class="form-group">
                         <label for="userid">User Id</label>
-                        <input type="email" class="form-control" required ng-model="loginCtrl.User.Email" name="userid" placeholder="User Id">
+                        <input type="email" class="form-control" required ng-model="loginCtrl.User.Email" id="userid" name="userid" placeholder="User Id">
                         <ng-messages for="loginForm.userid.$error" style="color:red;" ng-show="loginForm.$submitted || loginForm.userid.$touched">
                             <div ng-messages-include="../static/messages.html"></div>
                         </ng-messages>
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="password" class="form-control" required ng-model="loginCtrl.User.Password" name="password" placeholder="Password">
+                        <input type="password" class="form-control" required ng-model="loginCtrl.User.Password" id="password" name="password" placeholder="Password">
                         <ng-messages for="loginForm.password.$error" style="color:red;" ng-show="loginForm.$submitted || loginForm.password.$touched">
                             <div ng-messages-include="../static/messages.html"></div>
                         </ng-messages>
@@ -46,47 +46,48 @@
 
                     <div class="form-group">
                         <label for="firstname">First Name</label>
-                        <input type="text" class="form-control" ng-minlength="2" ng-maxlength="20" ng-model="signupCtrl.User.FirstName" name="firstname" required placeholder="First Name">
+                        <input type="text" class="form-control" ng-minlength="2" ng-maxlength="20" ng-model="signupCtrl.User.FirstName" id="firstname" name="firstname" required placeholder="First Name">
                         <ng-messages for="signupForm.firstname.$error" style="color:red;" ng-show="signupForm.$submitted || signupForm.firstname.$touched">
                             <div ng-messages-include="../static/messages.html"></div>
                         </ng-messages>
                     </div>
                     <div>
                         <label for="lastname">Last Name</label>
-                        <input type="text" class="form-control" ng-model="signupCtrl.User.LastName" name="lastname" placeholder="Last Name">
+                        <input type="text" class="form-control" ng-model="signupCtrl.User.LastName" id="lastname" name="lastname" placeholder="Last Name">
                         <ng-messages for="signupForm.lastname.$error" style="color:red;" ng-show="signupForm.$submitted || signupForm.lastname.$touched">
                             <div ng-messages-include="../static/messages.html"></div>
                         </ng-messages>
                     </div>
                     <div class="form-group">
-                        <label for="emailid">Email Id</label>
-                        <input type="email" class="form-control" required ng-model="signupCtrl.User.Email" name="email" placeholder="Email Id" />
+                        <label for="email">Email Id</label>
+                        <input type="email" class="form-control" required ng-model="signupCtrl.User.Email" id="email" name="email" placeholder="Email Id" />
                         <ng-messages for="signupForm.email.$error" style="color:red;" ng-show="signupForm.$submitted || signupForm.email.$touched">
                             <div ng-messages-include="../static/messages.html"></div>
                         </ng-messages>
                     </div>
 
                     <div class="form-group">
-                        <label for="emailid">Code</label>
-                        <input type="number" class="form-control" ng-minlength="6" required ng-model="signupCtrl.User.Code" name="code" placeholder="code" />
+                        <label for="code">Code</label>
+                        <input type="text" class="form-control" ng-minlength="6" required ng-model="signupCtrl.User.SignUpCode" id="code" name="code" placeholder="code" />
                         <ng-messages for="signupForm.code.$error" style="color:red;" ng-show="signupForm.$submitted || signupForm.code.$touched">
                             <div ng-messages-include="../static/messages.html"></div>
                         </ng-messages>
                     </div>
-                    <div class="form-group">
-                        <button type="submit" ng-disabled="signupForm.email.$error" ng-click="!signupForm.email.$error && signupCtrl.GetCode()" class="btn btn-default">Get Code</button>
+                   
+                    <div class="form-group" >
+                        <button type="button" ng-click="signupCtrl.GetCode()" class="btn btn-default">Get Code</button>
                     </div>
 
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="password" class="form-control" ng-minlength="6" ng-maxlength="10" required ng-model="signupCtrl.User.Password" name="password" placeholder="Password" />
+                        <input type="password" class="form-control" ng-minlength="6" ng-maxlength="10" required ng-model="signupCtrl.User.Password" id="password" name="password" placeholder="Password" />
                         <ng-messages for="signupForm.password.$error" style="color:red;" class="has-error" ng-show="signupForm.$submitted || signupForm.password.$touched">
                             <div ng-messages-include="../static/messages.html"></div>
                         </ng-messages>
                     </div>
                     <div class="form-group">
                         <label for="Phonenumber">Phone Number</label>
-                        <input type="number" ng-maxlength="10" class="form-control" required ng-model="signupCtrl.User.PhoneNumber" name="phonenumber" placeholder="Phone Number" />
+                        <input type="number" ng-maxlength="10" class="form-control" required ng-model="signupCtrl.User.PhoneNumber" id="phonenumber" name="phonenumber" placeholder="Phone Number" />
                         <ng-messages for="signupForm.phonenumber.$error" style="color:red;" ng-show="signupForm.$submitted || signupForm.phonenumber.$touched">
                             <div ng-messages-include="../static/messages.html"></div>
                         </ng-messages>

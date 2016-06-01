@@ -84,8 +84,11 @@ namespace ExpenseTracker.Models
         [DataMember(Name = "PhoneNumber", Order = 5)]
         public Int16 PhoneNumber { get; set; }
 
-        [DataMember(Name = "Setting", Order = 6)]
+        [DataMember(Name = "Setting", Order = 7)]
         public UserSetting Setting { get; set; }
+
+        [DataMember(Name = "SignUpCode", Order = 6)]
+        public string SignUpCode { get; set; }
     }
 
     [DataContract(Name = "UserSetting", Namespace = "")]

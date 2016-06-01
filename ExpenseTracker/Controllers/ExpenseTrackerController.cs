@@ -1,5 +1,7 @@
-﻿using ExpenseTracker.Models;
+﻿using AutoRecoveryServices.Email;
+using ExpenseTracker.Models;
 using ExpenseTracker.Utility;
+using ExpenseTracker.Utility.Enumeration;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -12,16 +14,46 @@ namespace ExpenseTracker.Controllers
 {
     public class ExpenseTrackerController : BaseController
     {
+        /// <summary>
+        /// Dashboards this instance.
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Dashboard()
         {
             return View();
         }
 
+        /// <summary>
+        /// Gets the dashboard data.
+        /// </summary>
+        /// <returns></returns>
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         public string GetDashboardData()
         {
             DashboardData dd = new DashboardData() { NoOfItems = 10, NoOfItemsText = "Items bought", TotalSpending = 1360, TotalSpendingText = "Total Spending", User = "Rajeev", UserText = "Welcome!", WishList = 2, WishListText = "may be this month" };
             return JsonConvert.SerializeObject(dd);
+        }
+
+        /// <summary>
+        /// Gets the sign up code.
+        /// </summary>
+        /// <param name="User">The user.</param>
+        /// <returns></returns>
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public string GetSignUpCode(Users User)
+        {
+            try
+            {
+                var SignUpCode = GetRandomString(6).ToUpper();
+                User.SignUpCode = SignUpCode;
+                Session.Add("SignUpCode", SignUpCode);
+                EmailManager.SendMail(User, MailType.SignUpCode);
+                return "Email sent, Please check your email.";
+            }
+            catch (Exception)
+            {
+                return "Email sending failed, Please try again.";
+            }
         }
 
         // GET: ExpenseTracker
@@ -30,11 +62,18 @@ namespace ExpenseTracker.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Logs the in.
+        /// </summary>
+        /// <returns></returns>
         public ActionResult LogIn()
         {
             return View();
         }
 
+        /// <summary>
+        /// Saves as json string.
+        /// </summary>
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         public void SaveAsJsonString()
         {
@@ -44,6 +83,16 @@ namespace ExpenseTracker.Controllers
             DataSerializer.JsonSerializerSaveAsFile<List<Users>>(UserList);
         }
 
+        /// <summary>
+        /// Signs the in.
+        /// </summary>
+        /// <param name="User">The user.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentException">
+        /// User not found;UserDefined
+        /// or
+        /// User not found;UserDefined
+        /// </exception>
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         public string SignIn(Users User)
         {
@@ -71,11 +120,20 @@ namespace ExpenseTracker.Controllers
             }
         }
 
+        /// <summary>
+        /// Signs the in view.
+        /// </summary>
+        /// <returns></returns>
         public ActionResult SignInView()
         {
             return View();
         }
 
+        /// <summary>
+        /// Signs up.
+        /// </summary>
+        /// <param name="User">The user.</param>
+        /// <returns></returns>
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         public string SignUp(Users User)
         {
@@ -94,19 +152,41 @@ namespace ExpenseTracker.Controllers
                 }
                 else
                 {
-                    UserList.Add(User);
-                    RegisterUser(UserList);
-                    return "1";
+                    if (Session["SignUpCode"] != null && User.SignUpCode == Convert.ToString(Session["SignUpCode"]))
+                    {
+                        UserList.Add(User);
+                        RegisterUser(UserList);
+                        EmailManager.SendMail(User, MailType.SignUp);
+                        Session["User"] = User;
+                        return "1";
+                    }
+                    else
+                    {
+                        return "Wrong SignUp Code.";
+                    }
                 }
             }
             else
             {
-                UserList = new List<Users>() { User };
-                RegisterUser(UserList);
-                return "1";
+                if (Session["SignUpCode"] != null && User.SignUpCode == Convert.ToString(Session["SignUpCode"]))
+                {
+                    UserList = new List<Users>() { User };
+                    RegisterUser(UserList);
+                    EmailManager.SendMail(User, MailType.SignUp);
+                    Session["User"] = User;
+                    return "1";
+                }
+                else
+                {
+                    return "Wrong SignUp Code.";
+                }
             }
         }
 
+        /// <summary>
+        /// Signs up view.
+        /// </summary>
+        /// <returns></returns>
         public ActionResult SignUpView()
         {
             return View();
@@ -132,6 +212,23 @@ namespace ExpenseTracker.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets the random string.
+        /// </summary>
+        /// <param name="length">The length.</param>
+        /// <returns></returns>
+        private string GetRandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            var random = new Random();
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        /// <summary>
+        /// Registers the user.
+        /// </summary>
+        /// <param name="UserList">The user list.</param>
         private void RegisterUser(List<Users> UserList)
         {
             DataSerializer.JsonSerializerSaveAsFile<List<Users>>(UserList);

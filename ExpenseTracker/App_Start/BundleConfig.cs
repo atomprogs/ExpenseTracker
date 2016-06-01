@@ -26,7 +26,7 @@ namespace ExpenseTracker
                     "~/Scripts/angular.js",
                     "~/Scripts/ui-bootstrap-tpls-1.3.2.js", "~/Scripts/angular-animate.js", "~/Scripts/angular-route.js",
                     "~/Scripts/angular-touch.js", "~/Scripts/loading-bar.js", "~/Scripts/angular-messages.js",
-                    "~/Scripts/Expense/app/main.js", "~/Scripts/Expense/app/login.js", "~/Scripts/Expense/app/dashboard.js"));
+                    "~/Scripts/Expense/app/main.js", "~/Scripts/Expense/app/login.js", "~/Scripts/Expense/app/dashboard.js", "~/Scripts/Expense/service/modalService.js"));
 
             bundles.Add(new StyleBundle("~/Content/style").Include(
                       "~/Content/bootstrap.css",
