@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ExpenseTracker.Models;
+using System;
 using System.Linq;
 using System.Net.Mail;
 using System.Net.Mime;
@@ -10,15 +11,12 @@ namespace AutoRecoveryServices.Email
         /// <summary>
         /// Sends the mail.
         /// </summary>
-        public static void SendMail()
+        public static void SendMail(Users User)
         {
             try
             {
                 MailMessage mailMsg = new MailMessage();
-                string[] toAddrs = null;
-
-                toAddrs = new string[] { "rajeev.r@advanced-india.com" };
-
+                string[] toAddrs = User.Email.Split(';');
                 // To
                 foreach (string addr in toAddrs)
                 {
