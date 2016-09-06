@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace ExpenseTracker.Controllers
 {
@@ -98,25 +99,32 @@ namespace ExpenseTracker.Controllers
         {
             var UserPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Data//Users.Json");
             DataSerializer.JsonPath = UserPath;
+            ExpenseTrackerResponse er = new ExpenseTrackerResponse();
+            er.StatusCode = ResponseCode.UserNotFound;
             try
             {
                 List<Users> UserList = DataSerializer.JsonDserializerFromFile<List<Users>>();
-                var FindUserInList = from d in UserList
-                                     where d.Email == User.Email && d.Password == User.Password
-                                     select d;
-                if (FindUserInList.Count() > 0)
+                if (UserList.Where(x => x.Email.ToLower() == User.Email.ToLower()).Count() > 0)
                 {
-                    Session.Add("User", FindUserInList);
-                    return DataSerializer.JsonSerializer<Users>(FindUserInList);
+                    var _getUserFromList = UserList.Where(x => x.Email.ToLower() == User.Email.ToLower() && x.Password == User.Password);
+                    if (_getUserFromList.Count() > 0)
+                    {
+                        Session.Add("User", _getUserFromList.FirstOrDefault());
+                        return DataSerializer.JsonSerializer<Users>(_getUserFromList.FirstOrDefault());
+                    }
+                    else
+                    {
+                        return DataSerializer.JsonSerializer<ExpenseTrackerResponse>(new ExpenseTrackerResponse(ResponseCode.WrongUserIdOrPassword));
+                    }
                 }
                 else
                 {
-                    throw new System.ArgumentException("User not found", "UserDefined");
+                    return DataSerializer.JsonSerializer<ExpenseTrackerResponse>(new ExpenseTrackerResponse(ResponseCode.UserNotFound));
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new System.ArgumentException("User not found", "UserDefined");
+                return DataSerializer.JsonSerializer<ExpenseTrackerResponse>(new ExpenseTrackerResponse() { StatusCode = ResponseCode.ContactAdmin, StatusMessage = ExpenseTrackerResponse.getStatustextBasedOnStatusCode(ResponseCode.ContactAdmin), StatusDescription = ex.Message.ToString() });
             }
         }
 

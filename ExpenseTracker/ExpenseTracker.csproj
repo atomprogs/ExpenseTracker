@@ -188,6 +188,7 @@
     <Compile Include="Utility\DataSerializer.cs" />
     <Compile Include="Utility\EmailManager.cs" />
     <Compile Include="Utility\Enumeration\Enumeration.cs" />
+    <Compile Include="Utility\ExpenseTrackerResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\AngularAnimation.css" />
@@ -1032,7 +1033,9 @@
     <Content Include="Templates\Email\SignUp.html" />
     <Content Include="Templates\Email\RecoveryCompletion.html" />
     <Content Include="Templates\Email\RecoveryFailed.html" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>

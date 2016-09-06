@@ -21,20 +21,20 @@ namespace ExpenseTracker.Filters
             string[] NoValidationForActions = new string[] { "index", "login", "signin", "GetSignUpCode".ToLower(), "GetRandomString".ToLower(), "signup" };
             if (!NoValidationForActions.Contains(CurrentActionName.ToLower()))
             {
-                if (filterContext.HttpContext.Session["User"] != null)
-                {
-                }
-                else if (!filterContext.HttpContext.Request.IsAjaxRequest())
+                if (filterContext.HttpContext.Session["User"] == null && !filterContext.HttpContext.Request.IsAjaxRequest())
                 {
                     filterContext.Result = RedirectionResult("ExpenseTracker", "LogIn");
                 }
-                else
+                else if (filterContext.HttpContext.Session["User"] == null && filterContext.HttpContext.Request.IsAjaxRequest())
                 {
                     filterContext.HttpContext.Response.StatusCode = 206;
                     filterContext.HttpContext.Response.Clear();
                     filterContext.Result = new EmptyResult();
                     emptyresult = true;
                 }
+            }
+            else
+            {
             }
             if (!emptyresult)
                 base.OnActionExecuting(filterContext);

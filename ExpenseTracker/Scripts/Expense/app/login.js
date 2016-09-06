@@ -26,7 +26,8 @@
             }, function errorCallback(response) {
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
-                console.log(response.data);
+                //console.log(response.data);
+                $scope.SignInmessage = response.data;
             });
         };
         LoginObj.User = { "Id": 0, "FirstName": null, "LastName": null, "Email": null, "Password": null, "PhoneNumber": null, "SignUpCode": null, "Setting": { "IsActive": false, "IsAdmin": false, "IsEnable": false, "CreatedDate": new Date(), "ModifiedDate": new Date() }, "MonthlyLimit": { "Month": 0, "Lowest": 0, "Highest": 0 } }
@@ -71,8 +72,10 @@
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
                 console.log(response.data);
+                // $scope.SignUpmessage=response.data;
             });
         };
+
         SignUp.GetCode = function () {
             var functiontoCall = {
                 method: 'POST',

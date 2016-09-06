@@ -11,4 +11,11 @@ namespace ExpenseTracker.Utility.Enumeration
         SignUp = 2,
         Notification = 3,
     }
+
+    public enum ResponseCode
+    {
+        UserNotFound = 601,
+        WrongUserIdOrPassword = 602,
+        ContactAdmin = 603,
+    }
 }
